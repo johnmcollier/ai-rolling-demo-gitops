@@ -290,7 +290,7 @@ backstage:
               debug: false
               licensedUsers: 50
         auth:
-          environment: production
+          environment: development
           # Enable experimental features for OIDC auth
           experimentalClientIdMetadataDocuments:
             enabled: true
