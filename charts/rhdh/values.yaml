@@ -4,15 +4,23 @@ global:
     includes:
       - "dynamic-plugins.default.yaml"
     plugins:
-      ##### Custom sign in page plugin #####
-      - package: oci://quay.io/redhat-ai-dev/rolling-demo-customized-sign-in-page:v0.1.1
-        disabled: true  # guest sign-in for local test cluster; custom page is OIDC-only
+      ##### Custom sign in page plugin (now NFS compatible) #####
+      - package: oci://quay.io/redhat-ai-dev/rolling-demo-customized-sign-in-page:0.2.0!red-hat-developer-hub-backstage-plugin-rolling-demo-customized-sign-in-page
+        disabled: true  # guest sign-in for local test cluster
         pluginConfig:
           dynamicPlugins:
             frontend:
               red-hat-developer-hub.backstage-plugin-rolling-demo-customized-sign-in-page:
                 signInPage:
                   importName: RollingDemoCustomizedSignInPage
+
+      ##### NFS Frontend Plugins #####
+      # App Auth (NFS sign-in page)
+      - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-app-auth:bs_1.52.0__0.1.1
+        disabled: false
+      # App Integrations (NFS provider integrations)
+      - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-app-integrations:bs_1.52.0__0.1.1
+        disabled: false
 
       ##### Red Hat Plugins without wrappers #####
       # Plugin for backstage auth
@@ -270,7 +278,7 @@ backstage:
       image:
         registry: quay.io
         repository: rhdh/rhdh-hub-rhel9
-        tag: "1.10-164"
+        tag: "2.0-79"
         pullSecrets:
           - quay-pull-secret
       command: []
@@ -559,7 +567,7 @@ backstage:
                   - ReadWriteOnce
                 resources:
                   requests:
-                    storage: 2Gi
+                    storage: 4Gi
         - name: dynamic-plugins
           configMap:
             defaultMode: 420
